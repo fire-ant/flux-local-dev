@@ -27,6 +27,13 @@ spec:
       enabled: true
       maxReplicas: 2
       cpu: 90
+    podAnnotations:
+      telegraf.infludata.com/port: "9898"
+      telegraf.influxdata.com/path: /v1/metrics
+      telegraf.influxdata.com/interval: 5s
+      telegraf.infludata.com/scheme: http
+      telegraf.infludata.com/internal: "true"
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

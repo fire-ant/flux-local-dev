@@ -487,3 +487,16 @@ Sync the changes on the cluster and see the reconciliation result:
 make sync
 flux get source oci podinfo-keyless -n apps
 ```
+
+### Logging-example:
+
+run the following command from the root of this directory to start up a cluster and observe the additional components necessary to configure a telegraf-sidecar per pod instance.
+
+```shell
+make up && gitops beta run ./kubernetes/logging --no-session
+```
+
+Note:
+- [kubernetes/logging](kubernetes/logging) has all the components (telegraf operator, kafka cluster etc)
+- [kubernetes/apps/podinfo.yaml](kubernetes/apps/podinfo.yaml) has been modified to incude the necessary annotations to congfigure the sidecar
+- the example is using the pre-existing installation of cert-manager to configure certs using the included cluster issuer

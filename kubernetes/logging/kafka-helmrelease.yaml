@@ -1,0 +1,22 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kafka
+  namespace: logging-system
+spec:
+  chart:
+    spec:
+      chart: kafka
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+  interval: 1m0s
+  targetNamespace: logging-system
+  # values:
+  #   auth:
+  #     clientProtocol: tls
+  #     existingSecrets: root-secret
+
+

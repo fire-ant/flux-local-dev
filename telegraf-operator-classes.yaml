@@ -1,0 +1,33 @@
+# https://github.com/influxdata/telegraf/blob/release-1.24/plugins/inputs/prometheus/README.md
+# https://github.com/influxdata/telegraf/blob/release-1.9/plugins/outputs/kafka/README.md
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: telegraf-operator-classes
+  namespace: logging-system
+stringData:
+  # basic classes that can be used to develop telegraf-operator ; these classes
+  # report to InfluxDB v1 in same cluster as well as to stdout for convenience
+  kafka: |+
+    [[inputs.prometheus]]
+      urls = urls = ["http://localhost:10254/metrics"]
+      metric_version = 2
+      kube_config=~/.kube/config
+    [[outputs.kafka]]
+      brokers = ["localhost:9092"]
+      topic = "telegraf"
+
+      ## Optional TLS Config
+      tls_ca = "/etc/telegraf/ca.pem"
+      tls_cert = "/etc/telegraf/cert.pem"
+      tls_key = "/etc/telegraf/key.pem"
+      ## Use TLS but skip chain & host verification
+      # insecure_skip_verify = false
+
+      ## Data format to output.
+      ## Each data format has its own unique set of configuration options, read
+      ## more about them here:
+      ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+      # data_format = "influx"
+

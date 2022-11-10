@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: console
+  namespace: logging-system
+spec:
+  chart:
+    spec:
+      chart: console
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: redpanda
+  interval: 1m0s
+  targetNamespace: logging-system
+  values:
+    console:
+      # See reference config: https://github.com/cloudhut/kowl/blob/master/docs/config/kowl.yaml)
+      config:
+        kafka:
+          brokers:
+            - kafka-0.flux.local:9092
+            - kafka-1.flux.local:9092
+            - kafka-2.flux.local:9092
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        cert-manager.io/cluster-issuer: "self-signed"
+      hosts:
+        - host: kafka.flux.local
+          http:
+            paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: console
+                    port:
+                      number: 8080

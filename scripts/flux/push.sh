@@ -25,3 +25,4 @@ diff_push() {
 diff_push cluster ${kubernetes_path}/clusters/${cluster_name}
 diff_push infra ${kubernetes_path}/infra
 diff_push apps ${kubernetes_path}/apps
+diff_push logging ${kubernetes_path}/logging

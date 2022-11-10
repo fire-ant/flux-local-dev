@@ -8,3 +8,5 @@ resources:
   - telegraf-operator-source.yaml
   - bitnami-source.yaml
   - kafka-helmrelease.yaml
+  - console-helmrelease.yaml
+  - redpanda-source.yaml

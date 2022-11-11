@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ls-system
+  labels:
+    toolkit.fluxcd.io/tenant: infra-team
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: ls-source
+  namespace: ls-system
+  labels:
+    toolkit.fluxcd.io/tenant: infra-team
+spec:
+  interval: 60m0s
+  url: https://localstack.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: localstack
+  namespace: ls-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: localstack
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: ls-source
+      interval: 12h
+  values:
+    service:
+      type: NodePort
+      annotations: {}
+      ipFamilies: []
+      ipFamilyPolicy: ""
+      externalTrafficPolicy: ""
+      edgeService:
+        name: edge
+        targetPort: 4566
+        nodePort: 31566
+      externalServicePorts:
+        start: 4510
+        end: 4560
+    extraEnvVars:
+      - name: DEFAULT_REGION
+        value: "us-east-1"
+      - name: SERVICES
+        value: "s3,dynamodb,sts"
+      - name: HOST
+        value: localhost
+      - name: HOST_EXTERNAL
+        value: localhost

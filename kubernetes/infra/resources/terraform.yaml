@@ -1,0 +1,57 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: aws-package-v4.33.0
+  namespace: flux-system
+spec:
+  interval: 30s
+  url: oci://ghcr.io/tf-controller/aws-primitive-modules
+  ref:
+    tag: v4.33.0-v1alpha2
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: aws-s3-bucket
+  namespace: flux-system
+spec:
+  path: aws_s3_bucket
+  values:
+    bucket: my-tf-controller-test-bucket
+    tags:
+      Environment: Dev
+      Name: My bucket
+  sourceRef:
+    kind: OCIRepository
+    name: aws-package-v4.33.0
+  approvePlan: auto
+  interval: 1m
+  destroyResourcesOnDeletion: true
+  runnerPodTemplate:
+    spec:
+      env:
+      - name: TF_AWS_DYNAMODB_ENDPOINT
+        value: "http://localstack.svc.cluster.local"
+      - name : TF_AWS_S3_ENDPOINT
+        value: "http://localstack.svc.cluster.local"
+      - name: TF_AWS_STS_ENDPOINT
+        value: "http://localstack.svc.cluster.local"
+      - name: TF_AWS_IAM_ENDPOINT
+        value:  "http://localstack.svc.cluster.local"
+      - name: TF_S3_USE_PATH_STYLE
+        value: "true"
+      - name: TF_SKIP_CREDENTIALS_VALIDATION
+        value: "true"
+      - name: TF_SKIP_METADATA_API_CHECK
+        value: "true"
+      - name: TF_SKIP_REQUESTION_ACCOUNT_ID
+        value: "true"
+      envFrom:
+      - secretRef:
+          name: aws-credentials
+
+# TF_AWS_DYNAMODB_ENDPOINT
+# TF_AWS_IAM_ENDPOINT
+# TF_AWS_S3_ENDPOINT
+# TF_AWS_STS_ENDPOINT

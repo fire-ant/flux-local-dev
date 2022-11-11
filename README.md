@@ -491,7 +491,7 @@ flux get source oci podinfo-keyless -n apps
 
 ### tf-controller example
 
-clone the repo and switch to the tf-localstack branch
+clone the repo and switch to the tf-localstack-II branch
 
 boot a cluster up and install tf-controller.
 
@@ -502,4 +502,5 @@ gitops beta run ./kubernetes/infra/resources --no-session
 
 use gitops run to reconcile the included [terraform example](kubernetes/infra/resources/)
 
-navigate to the [ui](https:ui.flux.local) and watch the dev bucket reconcile the terraform resource
+navigate to the [ui](https:ui.flux.local) and watch the dev bucket reconcile the terraform resource(s)
+

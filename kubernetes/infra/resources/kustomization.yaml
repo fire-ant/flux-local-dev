@@ -4,6 +4,9 @@ metadata:
   name: resources
   namespace: flux-system
 resources:
-  # - terraform.yaml
-  # - credentials.yaml
-  - hello.yaml
+- bucket/bucket.yaml
+- vm/vm.yaml
+spec:
+  path: ./
+  interval: 1m
+  prune: true

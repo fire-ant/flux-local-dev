@@ -487,3 +487,19 @@ Sync the changes on the cluster and see the reconciliation result:
 make sync
 flux get source oci podinfo-keyless -n apps
 ```
+
+
+### tf-controller example
+
+clone the repo and switch to the tf-localstack branch
+
+boot a cluster up and install tf-controller.
+
+```shell
+make up
+gitops beta run ./kubernetes/infra/resources --no-session
+```
+
+use gitops run to reconcile the included [terraform example](kubernetes/infra/resources/)
+
+navigate to the [ui](https:ui.flux.local) and watch the dev bucket reconcile the terraform resource

@@ -1,0 +1,40 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: upbound
+  namespace: flux-system
+spec:
+  interval: 60m0s
+  url: https://charts.crossplane.io/stable
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: crossplane
+  namespace: flux-system
+  labels:
+    toolkit.fluxcd.io/tenant: infra-team
+spec:
+  interval: 30m
+  targetNamespace: crossplane-system
+  chart:
+    spec:
+      chart: crossplane
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: upbound
+        namespace: flux-system
+      interval: 65m
+  install:
+    createNamespace: true
+# https://crossplane.io/docs/v1.9/getting-started/install-configure.html
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-aws
+  namespace: crossplane-system
+spec:
+  package: crossplane/provider-aws:master

@@ -30,11 +30,3 @@ spec:
   install:
     createNamespace: true
 # https://crossplane.io/docs/v1.9/getting-started/install-configure.html
----
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: provider-aws
-  namespace: crossplane-system
-spec:
-  package: crossplane/provider-aws:master

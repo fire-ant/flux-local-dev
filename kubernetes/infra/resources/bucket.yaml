@@ -7,6 +7,7 @@ metadata:
   annotations:
     aws.alpha.crossplane.io/endpointServiceID: s3
     aws.alpha.crossplane.io/endpointURL: http://s3.localstack.svc.cluster.local:4566
+    aws.alpha.crossplane.io/endpointSigningRegion: us-east-1
 spec:
   providerConfigRef:
     name: default

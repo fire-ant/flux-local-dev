@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: podinfo
+  namespace: apps
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: merge
+spec:
+  serviceAccountName: dev-team
+  interval: 10m
+  chart:
+    spec:
+      chart: podinfo
+      version: "6.2.3"
+      sourceRef:
+        kind: HelmRepository
+        name: podinfo
+  dependsOn:
+    - name: kyverno-policies
+      namespace: flux-system
+  values:
+    image:
+      repository: ghcr.io/stefanprodan/podinfo
+      tag: "latest" # change this to match the chart version to pass
+      pullPolicy: IfNotPresent
+
+
+# https://github.com/stefanprodan/podinfo/blob/master/charts/podinfo/values.yaml

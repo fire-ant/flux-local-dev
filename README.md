@@ -487,3 +487,11 @@ Sync the changes on the cluster and see the reconciliation result:
 make sync
 flux get source oci podinfo-keyless -n apps
 ```
+
+
+### Kyverno example
+
+start a gitops run session: ```gitops beta run ./kubernetes/releases/ --no-session```
+check a new Cluster policy is installed ```kubectl get Clusterpolicy``` - should be called `disallow-latest-tag`
+check the policy is acting on the podinfo patch ```kubectl logs $(kubectl get po -l app=kyverno -A -o=name) -n kyverno```
+check that you can remediate the violation by changing the spec.values.image.tag value to something which isnt 'latest' in [kubernetes/releases/apps/podinfo-patch.yaml](kubernetes/releases/apps/podinfo-patch.yaml) i.e. '6.2.3

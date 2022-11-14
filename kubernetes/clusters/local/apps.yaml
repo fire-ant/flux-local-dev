@@ -20,6 +20,7 @@ metadata:
 spec:
   dependsOn:
     - name: infra-config
+    - name: policy-config
   interval: 1h
   retryInterval: 30s
   timeout: 5m

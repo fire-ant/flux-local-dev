@@ -1,0 +1,28 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: kyverno
+  namespace: flux-system
+spec:
+  interval: 60m
+  url: oci://ghcr.io/kyverno/manifests/kyverno
+  ref: # pull the latest patch release evey hour
+    semver: 1.8.x
+  # verify: # enable Cosign keyless verification
+  #   provider: cosign
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: policy-config
+  namespace: flux-system
+spec:
+  interval: 360m
+  prune: true
+  wait: true
+  timeout: 5m
+  sourceRef:
+    kind: OCIRepository
+    name: kyverno
+  path: ./

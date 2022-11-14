@@ -1,0 +1,34 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: influxdb
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: influxdb2
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: influxdb
+  interval: 1m0s
+  values:
+    adminUser:
+      organization: "influxdata"
+      bucket: "default"
+      user: "admin"
+      retention_policy: "0s"
+      password: "fluxfluxflux"
+      token: "1234567890qwerty"
+    ingress:
+      enabled: true
+      hostname: influxdb.flux.local
+      className: nginx
+      tls: true
+      secretName: grafana-ingress-tls
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        cert-manager.io/cluster-issuer: "self-signed"
+      path: /

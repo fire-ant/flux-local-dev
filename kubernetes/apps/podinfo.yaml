@@ -27,6 +27,12 @@ spec:
       enabled: true
       maxReplicas: 2
       cpu: 90
+    # create Prometheus Operator monitor
+    serviceMonitor:
+      enabled: true
+      interval: 15s
+      additionalLabels: 
+        app: podinfo
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

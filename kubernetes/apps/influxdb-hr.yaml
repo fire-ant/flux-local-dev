@@ -13,6 +13,7 @@ spec:
         kind: HelmRepository
         name: influxdb
   interval: 1m0s
+  targetNamespace: monitoring
   values:
     adminUser:
       organization: "influxdata"
@@ -32,3 +33,4 @@ spec:
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         cert-manager.io/cluster-issuer: "self-signed"
       path: /
+# https://www.influxdata.com/blog/prometheus-remote-write-support-with-influxdb-2-0/

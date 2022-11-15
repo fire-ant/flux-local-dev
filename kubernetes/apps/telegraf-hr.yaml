@@ -12,6 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: influxdb
+  targetNamespace: monitoring
   values:
     service:
       enabled: true
@@ -39,8 +40,9 @@ spec:
             organization: "influxdata"
             bucket: default
             urls:
-              - "https://influxdb.svc.cluster.local:8086"
+              - "http://monitoring-influxdb-influxdb2.monitoring.svc.cluster.local"
   interval: 1m0s
+
 # https://github.com/influxdata/helm-charts/blob/master/charts/telegraf/values.yaml
 # https://github.com/influxdata/telegraf/tree/master/plugins/inputs/http_listener_v2
 # https://github.com/influxdata/telegraf/tree/master/plugins/parsers/prometheusremotewrite

@@ -101,6 +101,7 @@ Add the following domains to `/etc/hosts`:
 127.0.0.1 podinfo.flux.local
 127.0.0.1 grafana.flux.local
 127.0.0.1 ui.flux.local
+127.0.0.1 influxdb.flux.local
 ```
 
 Verify that the NGINX ingress self-signed TLS works:
@@ -487,3 +488,18 @@ Sync the changes on the cluster and see the reconciliation result:
 make sync
 flux get source oci podinfo-keyless -n apps
 ```
+
+### Influx Example
+
+This Branch leverages the Flux-local-dev tooling to spin up a cluster with kind using ```make up```
+
+Installs:
+- [prometheus-operator/kube-prom-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
+- [telegraf](https://github.com/influxdata/telegraf)
+- [influxdb](https://github.com/influxdata/influxdb)
+
+This is an example of the configurations needed to correctly configure [prometheus remote-write](https://www.influxdata.com/blog/prometheus-remote-write-support-with-influxdb-2-0/) so that the requisite aspects in the chain/flow of data can be observed.
+
+If configured per this repository you should be able to navigate the components as gitops artifacts in both [kubernetes/apps/](kubernetes/apps/) (telegraf, influx, podinfo) and [kubernetes/infra/](kubernetes/infra/controllers/) (prometheus) to understand how this works at a high level.
+
+
